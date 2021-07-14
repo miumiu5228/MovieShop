@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "YRPnhfizfifQ7lmVJd/GzKanSj6hGaLHOUALA5Xc/RFaDv9pzn1HFu8sHV4PvXh0Lly+v7IYRftZ/hp33m0cbQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\miumi\\source\\repos\\MovieShop\\ApplicationCore\\ApplicationCore.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\miumi\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,15 @@
+﻿@model List<ApplicationCore.Models.MovieCardResponseModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h2>Top Movies</h2>
+
+@foreach(var movie in Model)
+{
+    <div>
+        @movie.Title <br/>
+        @movie.Id  <br/>
+        @movie.Budget 
+    </div>
+}

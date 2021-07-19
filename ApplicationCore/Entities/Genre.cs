@@ -19,7 +19,7 @@ namespace ApplicationCore.Entities
        
 
         //Navigation
-        public ICollection<Movie> Movies { get; set; }
+       public ICollection<Movie> Movies { get; set; }
 
     }
 }

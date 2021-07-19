@@ -14,6 +14,7 @@ namespace ApplicationCore.Entities
         public string Department { get; set; }
         public string Job { get; set; }
 
-        
+        public Crew Crew { get; set; }
+        public Movie Movie { get; set; }
     }
 }

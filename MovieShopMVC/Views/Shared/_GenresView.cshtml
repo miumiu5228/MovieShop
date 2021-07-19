@@ -1,0 +1,11 @@
+﻿@using ApplicationCore.ServiceInterfaces
+
+@inject IGenreService _genreService
+
+
+@foreach (var genre in await _genreService.GetAllGenres())
+{
+    @*@Html.ActionLink(genre.Name, "Genre", "Movies", new { genreId = genre.Id }, new { @class = "dropdown-item" })*@
+
+    <a asp-controller="Movies" asp-action="Genre" class="dropdown-item" asp-route-id="@genre.Id"> @genre.Name</a>
+}

@@ -1,0 +1,23 @@
+﻿@model List<ApplicationCore.Models.MovieCardResponseModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="rounded">
+    <div class="container-fluid bg-light">
+      
+        <div class="row">
+          
+
+            @foreach (var movie in @Model)
+            {
+                <div class="col-3">
+                    
+                    <partial name="_MovieCard" model="movie" />
+         
+                </div>
+            }
+        </div>
+
+    </div>
+</div>

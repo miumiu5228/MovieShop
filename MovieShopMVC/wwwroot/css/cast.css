@@ -1,0 +1,36 @@
+﻿
+.profile img {
+    border-radius: 12px;
+    width: 272px;
+}
+
+ul {
+    margin-left: 20px;
+    margin-top:20px
+}
+
+li {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    list-style: none;
+}
+
+.ProfileTitle {
+    font-size: 25px;
+    font-weight: 400;
+}
+
+.infoTitle {
+    margin-bottom:10px;
+    font-weight: 300;
+    font-size: 16px;
+}
+
+.info {
+    font-weight: 100;
+    font-size: 14px;
+    color:dimgrey
+}
+
+h1{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}

@@ -1,0 +1,95 @@
+﻿@section styles {
+    <link rel="stylesheet" href="~/css/details.css"/>
+}
+
+@model ApplicationCore.Models.MovieDetailsResponseModel
+
+
+<div>
+   
+    <div class="row align-items-center" style="background-image:url(@Model.BackdropUrl);  background-position: center;">
+        <div class="col-3 mt-5">
+            <partial name="_MovieCard" model="@Model.MovieCardResponseModel" />
+        </div>
+        <div class="col-6">
+            <h1>@Model.Title</h1>
+            <h6>@Model.Tagline</h6>
+            <span>@Model.RunTime</span>
+            <span>m</span>
+
+
+            <ul>
+                @foreach (var genre in @Model.Genres)
+
+                {
+                    <li><span class="badge badge-secondary">@genre.Name</span></li>
+                }
+            </ul>
+            <span class="badge badge-warning">@Model.Rating</span>
+            <p>@Model.Overview</p>
+
+        </div>
+        <div class="col-3">
+            <button type="button" class="btn btn-outline-light">REVIEW</button>
+            <button type="button" class="btn btn-outline-light">TRAILER</button>
+            <button type="button" class="btn btn-light">BUY 9.90</button>
+            <button type="button" class="btn btn-light">WATCH MOVIE</button>
+
+        </div>
+
+    </div>
+
+
+    <div class="row movieContent">
+        <div class="col-3 movieFacts">
+            <ul>
+                <li><h4>MOVIE FACTS</h4></li>
+                <li><i class='far fa-calendar-alt'></i>
+                    Release Date
+                    <span class="badge badge-dark"> @Model.ReleaseDate</span>
+                   
+                </li>
+                <li>
+                    Run Time
+                    <span class="badge badge-dark">  @Model.RunTime m</span>
+                  
+                </li>
+                <li>
+                    Box Office
+                    <span class="badge badge-dark"> $$ @Model.Revenue</span>
+                    
+                </li>
+                <li>
+                    Budget
+                    <span class="badge badge-dark"> $$ @Model.Budget</span>
+                    
+                </li>
+            </ul>
+
+        </div>
+        <div class="col-6 eachCast offset-1">
+            @foreach (var cast in @Model.Casts)
+            {
+                <div class="row mt-5">
+                    <div class="col-1">
+                        <a asp-controller="Cast" asp-action="Details" asp-route-id="@cast.Id">
+                            <img src="@cast.ProfilePath" class="img-fluid" alt="@cast.Name" />
+                        </a>
+                    </div>
+                    <div class="col-3">@cast.Name</div>
+                    <div class="col-7">@cast.Character</div>
+
+                </div>
+             }
+
+
+
+
+           
+        </div>
+    </div>
+   
+    
+
+</div>
+

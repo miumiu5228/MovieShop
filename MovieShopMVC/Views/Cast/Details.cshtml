@@ -1,0 +1,38 @@
+﻿@section styles {
+    <link rel="stylesheet" href="~/css/cast.css" />
+}
+@model ApplicationCore.Models.CastResponseModel
+
+
+<div class="row profile">
+    <div class="col-3">
+        <img src="@Model.ProfilePath" alt="@Model.Name" />
+
+        <ul class="list-group">
+            <li class="ProfileTitle">Profile</li>
+            <li class="infoTitle">Name</li>
+            <li class="info">@Model.Name</li>
+            <li class="infoTitle">Gender</li>
+            <li class="info">@Model.MovieCardResponseModel.Count</li>
+            <li class="infoTitle"> More info</li>
+            <li class="info"><a href=@Model.TmdbUrl></a></li>
+        </ul>
+
+    </div>
+    <div class="col-8">
+        <h1>Movie Products</h1>
+        <div class="row">
+
+            @foreach (var movie in @Model.MovieCardResponseModel)
+            {
+                <div class="col-3">
+            
+                    <partial name="_MovieCard" model="movie" />
+
+                </div>
+            }
+        </div>
+
+    </div>
+
+</div>

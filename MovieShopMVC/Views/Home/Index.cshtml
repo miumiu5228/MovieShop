@@ -3,13 +3,20 @@
     ViewData["Title"] = "Home Page";
 }
 
-<h2>Top Movies</h2>
+<div class="rounded">
+    <div class="container-fluid bg-light">
+        <div class="row">
+            
+           @foreach(var movie in Model)
+            {
+               <div class="col-3">
+                   <partial name="_MovieCard" model="movie"/>
+                    
+                   @*The second way to call partial view
+                   @await Html.PartialAsync("_MovieCard",movie)*@ 
+               </div>
+            }
+        </div>
 
-@foreach(var movie in Model)
-{
-    <div>
-        @movie.Title <br/>
-        @movie.Id  <br/>
-        @movie.Budget 
     </div>
-}
+</div>

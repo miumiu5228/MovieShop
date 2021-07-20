@@ -14,6 +14,7 @@ using ApplicationCore.RepositoryInterfaces;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
 using ApplicationCore.ServiceInterfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace MovieShopMVC
 {
@@ -29,6 +30,8 @@ namespace MovieShopMVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+
             services.AddControllersWithViews();
             services.AddDbContext<MovieShopDbContext>(option =>{
                 option.UseSqlServer(Configuration.GetConnectionString("MovieShopDbConnection"));
@@ -39,7 +42,21 @@ namespace MovieShopMVC
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ICastRepository, CastRepository>();
             services.AddScoped<ICastService, CastsService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICurrentUser, CurrentUser>();
 
+
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+
+                    options.Cookie.Name = "MovieShopAuth";
+                    options.ExpireTimeSpan = TimeSpan.FromHours(2);
+                    options.LoginPath = "/Account/Login";
+                });
+
+            
 
         }
 
@@ -62,6 +79,7 @@ namespace MovieShopMVC
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

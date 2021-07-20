@@ -54,10 +54,12 @@ namespace Infrastructure.Repositories
             return await _dbContext.Set<T>().Where(filter).AnyAsync();
         }
 
-        //public async Task<T> AddAsync(T entity)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<T> AddAsync(T entity)
+        {
+            await _dbContext.Set<T>().AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
 
         //public async Task<T> UpdateAsync(T entity)
         //{

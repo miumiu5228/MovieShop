@@ -80,3 +80,8 @@ C:\Users\miumi\source\repos\MovieShop\MovieShopMVC\obj\Debug\net5.0\Razor\Views\
 C:\Users\miumi\source\repos\MovieShop\MovieShopMVC\obj\Debug\net5.0\Razor\Views\Movies\Genre.cshtml.g.cs
 C:\Users\miumi\source\repos\MovieShop\MovieShopMVC\obj\Debug\net5.0\Razor\Views\Movies\Cast.cshtml.g.cs
 C:\Users\miumi\source\repos\MovieShop\MovieShopMVC\obj\Debug\net5.0\Razor\Views\Cast\Details.cshtml.g.cs
+C:\Users\miumi\source\repos\MovieShop\MovieShopMVC\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\miumi\source\repos\MovieShop\MovieShopMVC\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\miumi\source\repos\MovieShop\MovieShopMVC\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
+C:\Users\miumi\source\repos\MovieShop\MovieShopMVC\obj\Debug\net5.0\Razor\Views\Account\Register.cshtml.g.cs
+C:\Users\miumi\source\repos\MovieShop\MovieShopMVC\obj\Debug\net5.0\Razor\Views\Shared\_LoginPartial.cshtml.g.cs

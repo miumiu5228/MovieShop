@@ -140,6 +140,39 @@ namespace Infrastructure.Services
 
             
         }
+
+        public async Task<List<MovieReviewsModel>> GetTopRatingMovies()
+        {
+            var movies = await _movieRepository.GetMoviesByTopRating();
+
+            foreach (var m in movies)
+            {
+                var movie = await _movieRepository.GetByIdAsync(m.Id);
+                m.Rating = movie.Rating;
+            }
+
+            var movieReview = new List<MovieReviewsModel>();
+
+            foreach (var movie in movies)
+            {
+                movieReview.Add(new MovieReviewsModel { MovieId = movie.Id, Rating = (decimal)movie.Rating, MovieName = movie.Title });
+            }
+
+            return movieReview;
+        }
+
+        public async Task<List<MovieReviewsModel>> GetMovieReviews(int id)
+        {
+            var movie = await _movieRepository.GetMovieReviews(id);
+
+            var movieReviews = new List<MovieReviewsModel>();
+            foreach (var review in movie.Reviews)
+            {
+                movieReviews.Add(new MovieReviewsModel { UserId = review.UserId, ReviewText = review.ReviewText, Rating = review.Rating});
+            }
+
+            return movieReviews;
+        }
     }
 
 

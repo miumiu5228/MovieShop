@@ -60,5 +60,19 @@ namespace Infrastructure.Repositories
             var movies = await _dbContext.Movies.Include(m => m.MovieCasts).ToListAsync();
             return movies;
         }
+
+        public async Task<List<Movie>> GetMoviesByTopRating()
+        {
+            var movies = await _dbContext.Movies.Include(m => m.Reviews).ToListAsync();
+
+            return movies;
+        }
+
+        public async Task<Movie> GetMovieReviews(int id)
+        {
+            var movie = await _dbContext.Movies.Include(m => m.Reviews).FirstOrDefaultAsync(m => m.Id == id);
+
+            return movie;
+        }
     }
 }

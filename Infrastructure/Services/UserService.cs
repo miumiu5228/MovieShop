@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using ApplicationCore.Entities;
@@ -17,6 +18,123 @@ namespace Infrastructure.Services
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
+        }
+
+
+        public async Task<UserFavoriteMoviesModel> UserFavorite(UserFavoriteMoviesModel requestModel)
+        {
+    
+     
+            var userResponse = new UserFavoriteMoviesModel
+            {
+              Id = requestModel.Id,
+              UserId = requestModel.UserId,
+              MovieId = requestModel.MovieId,
+              MoiveName = requestModel.MoiveName
+            };
+
+            return userResponse;
+        }
+
+
+
+
+        //public async Task<PurchaseMovieResponseModel> Purchase(PurchaseMovieModel purchaseMovie)
+        //{
+        //    var purchase = new PurchaseMovieResponseModel()
+        //    {
+        //        MovieId = purchaseMovie.MovieId,
+        //        UserId = purchaseMovie.MovieId,
+
+
+        //    };
+
+        //    return purchase;
+        //}
+        public async Task<List<UserPurchaseModel>> GetPurchaseById(int id)
+        {
+            var user = await _userRepository.GetPurchase(id);
+
+            var UserPurchaseMovies = new List<UserPurchaseModel>();
+
+            foreach (var u in user.Purchases)
+            {
+                UserPurchaseMovies.Add(new UserPurchaseModel
+                {
+                   PurchaseId = u.Id,
+                   UserId = u.UserId,
+                   TotalPrice = u.TotalPrice,
+                   PurchaseDateTime = u.PurchaseDateTime,
+                   MovieId = u.MovieId,
+                   MovieName = u.Movie.Title
+
+                });
+            }
+
+            return UserPurchaseMovies;
+
+        }
+
+
+        public async Task<List<UserFavoriteMoviesModel>> GetFavoriteById(int id)
+        {
+            var user = await _userRepository.GetFavorites(id);
+
+            var UserFavoriteMovies = new List<UserFavoriteMoviesModel>();
+
+            foreach(var m in user.Favorites)
+            {
+                UserFavoriteMovies.Add(new UserFavoriteMoviesModel
+                {
+                    Id = m.Id,
+                    UserId = m.UserId,
+                    MoiveName = m.Movie.Title,
+                    MovieId = m.MovieId
+                });
+
+            }
+
+            return UserFavoriteMovies;
+        }
+
+        public async Task<List<MovieReviewsModel>> GetReviews(int id)
+        {
+            var user = await _userRepository.GetReviewsById(id);
+
+
+            var movieReviw = new List<MovieReviewsModel>();
+
+            foreach(var m in user.Reviews)
+            {
+                movieReviw.Add(new MovieReviewsModel
+                {
+                   
+                    Rating = m.Rating,
+                    ReviewText = m.ReviewText,
+                    MovieId = m.MovieId,
+                    UserId =m.UserId
+
+                });
+            }
+          
+            return movieReviw;
+
+
+        }
+
+        public async Task<UserResponseModel> GetUserById(int id)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+
+            var userResponseModel = new UserResponseModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth
+            };
+            return userResponseModel;
         }
 
         public async Task<UserLoginResponseModel> Login(string email, string password)
@@ -104,6 +222,8 @@ namespace Infrastructure.Services
 
             return Convert.ToBase64String(randomBytes);
         }
+
+  
 
         private string HashPassword(string password, string salt)
         {

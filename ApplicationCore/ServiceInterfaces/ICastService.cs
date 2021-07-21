@@ -10,5 +10,7 @@ namespace ApplicationCore.ServiceInterfaces
     public interface ICastService
     {
         Task<CastResponseModel> GetMovieByCast(int id);
+
+        Task<CastResponseModel> GetCastById(int id);
     }
 }

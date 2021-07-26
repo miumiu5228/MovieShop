@@ -17,13 +17,22 @@ namespace Infrastructure.Repositories
 
         }
 
+        public async Task<Review> GetReviews(int id, int movieId)
+        {
+            var review = await _dbContext.Reviews.FirstOrDefaultAsync(r=>r.MovieId == movieId && r.UserId == id);
+            return review;
+
+
+
+        }
+
         public async Task<List<Review>> GetReviewsByUser(int id)
         {
             var reviews = await _dbContext.Reviews.Include(r => r.UserId == id).ToListAsync();
             return reviews;
         }
 
-     
+
     }
 
 

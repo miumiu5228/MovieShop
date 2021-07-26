@@ -25,6 +25,8 @@ namespace MovieShopAPI.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> GetCast(int id)
         {
+            var x = 0;
+            x += 1;
             var cast = await _castService.GetCastById(id);
 
             if (cast == null)

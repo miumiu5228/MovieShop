@@ -17,11 +17,11 @@ namespace Infrastructure.Repositories
 
         }
 
-        public async Task<List<Purchase>> GetPurchase(int id)
-        {
-            var purchases = await _dbContext.Purchases.Include(p => p.User).Include(p => p.Movie).Where(p=>p.UserId == id).ToListAsync();
+        //public async Task<List<Purchase>> GetPurchase(int id)
+        //{
+        //    var purchases = await _dbContext.Purchases.Include(p => p.User).Include(p => p.Movie).Where(p=>p.UserId == id).ToListAsync();
 
-            return purchases;  
-        }
+        //    return purchases;  
+        //}
     }
 }

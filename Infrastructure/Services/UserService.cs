@@ -14,43 +14,53 @@ namespace Infrastructure.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly ICurrentUser _currentUser;
+        private readonly IPurchaseRepository _purchaseRepository;
+        private readonly IMovieRepository _movieRespository;
+        private readonly IFavoriteRepository _favoriteRepository;
+        private readonly IReviewRepository _reviewRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, ICurrentUser currentUser, IPurchaseRepository purchaseRepository, IMovieRepository movieRepository, IFavoriteRepository favoriteRepository, IReviewRepository reviewRepository)
         {
             _userRepository = userRepository;
+            _currentUser = currentUser;
+            _purchaseRepository = purchaseRepository;
+            _movieRespository = movieRepository;
+            _favoriteRepository = favoriteRepository;
+            _reviewRepository = reviewRepository;
         }
 
 
-        public async Task<UserFavoriteMoviesModel> UserFavorite(UserFavoriteMoviesModel requestModel)
+        public async Task<PurchaseMovieResponseModel> PurchaseMovie(PurchaseMovieModel purchaseMovie)
         {
-    
-     
-            var userResponse = new UserFavoriteMoviesModel
+            var dbPurchase = await _purchaseRepository.GetExistsAsync(p => p.MovieId == purchaseMovie.MovieId && p.UserId == purchaseMovie.UserId);
+
+            if (dbPurchase == true)
             {
-              Id = requestModel.Id,
-              UserId = requestModel.UserId,
-              MovieId = requestModel.MovieId,
-              MoiveName = requestModel.MoiveName
+                throw new ConflictException("You already bought this movie");
+            }
+
+
+            await _purchaseRepository.AddAsync(new Purchase
+            {
+               UserId = purchaseMovie.UserId,
+               MovieId = purchaseMovie.MovieId
+
+            });
+
+
+
+            var purchase = new PurchaseMovieResponseModel()
+            {
+                MovieId = purchaseMovie.MovieId,
+                UserId = purchaseMovie.MovieId,
+                
+
+
             };
 
-            return userResponse;
+            return purchase;
         }
-
-
-
-
-        //public async Task<PurchaseMovieResponseModel> Purchase(PurchaseMovieModel purchaseMovie)
-        //{
-        //    var purchase = new PurchaseMovieResponseModel()
-        //    {
-        //        MovieId = purchaseMovie.MovieId,
-        //        UserId = purchaseMovie.MovieId,
-
-
-        //    };
-
-        //    return purchase;
-        //}
         public async Task<List<UserPurchaseModel>> GetPurchaseById(int id)
         {
             var user = await _userRepository.GetPurchase(id);
@@ -63,10 +73,10 @@ namespace Infrastructure.Services
                 {
                    PurchaseId = u.Id,
                    UserId = u.UserId,
-                   TotalPrice = u.TotalPrice,
-                   PurchaseDateTime = u.PurchaseDateTime,
+                
+                
                    MovieId = u.MovieId,
-                   MovieName = u.Movie.Title
+                 
 
                 });
             }
@@ -237,6 +247,163 @@ namespace Infrastructure.Services
             iterationCount: 10000,
             numBytesRequested: 256 / 8));
             return hashed;
+        }
+
+        public async Task<FavoriteResponseModel> AddToFavorite(FavoriteRequestModel model)
+        {
+            var dbFavorite = await _favoriteRepository.GetExistsAsync(f => f.MovieId == model.MovieId && f.UserId == model.UserId);
+            if (dbFavorite == true)
+            {
+                throw new ConflictException("The movie arleady added!");
+            }
+
+            await _favoriteRepository.AddAsync(new Favorite
+            {
+                UserId = model.UserId,
+                MovieId = model.MovieId
+            });
+
+
+
+            var addFavoriteResonse = new FavoriteResponseModel
+            {
+
+                UserId = model.UserId,
+                MovieId = model.MovieId
+            };
+
+            return addFavoriteResonse;
+        }
+
+        public async Task<UnFavoriteResponseModel> removefromFavorite(UnFavoriteRequestModel model)
+        {
+            var dbFavorite = await _favoriteRepository.GetExistsAsync(f => f.Id == model.Id);
+
+            if (dbFavorite != true)
+            {
+                throw new ConflictException("The movie dose not exists!");
+            }
+
+            await _favoriteRepository.DeleteAsync(new Favorite
+            {
+                Id = model.Id, 
+                UserId = model.UserId,
+                MovieId = model.MovieId
+            });
+
+
+
+            var deleteFavoriteResonse = new UnFavoriteResponseModel
+            {
+                Id = model.Id,
+                UserId = model.UserId,
+                MovieId = model.MovieId
+            };
+
+            return deleteFavoriteResonse;
+        }
+
+        public async Task<PostReviewsResponseModel> PostReviews(PostReviewsRequestModel model)
+        {
+            var dbReviews = await _reviewRepository.GetExistsAsync(f => f.MovieId == model.MovieId && f.UserId == model.UserId);
+
+            if (dbReviews != false)
+            {
+                throw new ConflictException("You already posted a review for this movie");
+            }
+            await _reviewRepository.AddAsync(new Review
+            {
+                MovieId = model.MovieId,
+                UserId = model.UserId,
+                Rating = model.Rating,
+                ReviewText = model.ReviewText
+            });
+
+            var postReviewsResponse = new PostReviewsResponseModel
+            {
+                MovieId = model.MovieId,
+                UserId = model.UserId,
+                Rating = model.Rating,
+                ReviewText = model.ReviewText
+
+            };
+
+            return postReviewsResponse;
+        }
+
+        public async Task<PostReviewsResponseModel> PutReviews(PostReviewsRequestModel model)
+        {
+            var dbReviews = await _reviewRepository.GetExistsAsync(f => f.MovieId == model.MovieId && f.UserId == model.UserId);
+
+            if (dbReviews != true)
+            {
+                throw new ConflictException("Conflict");
+            }
+            await _reviewRepository.UpdateAsync(new Review
+            {
+                MovieId = model.MovieId,
+                UserId = model.UserId,
+                Rating = model.Rating,
+                ReviewText = model.ReviewText
+            });
+
+            var postReviewsResponse = new PostReviewsResponseModel
+            {
+                MovieId = model.MovieId,
+                UserId = model.UserId,
+                Rating = model.Rating,
+                ReviewText = model.ReviewText
+
+            };
+
+            return postReviewsResponse;
+        }
+
+        public async Task<MovieCardResponseModel> GetFavoriteMovieDetail(int id, int movieId)
+        {
+            var dbFavorite = await _favoriteRepository.GetFavorite(id, movieId);
+
+
+
+
+            var movieCardResponseModel = new MovieCardResponseModel
+            {
+                Id = dbFavorite.Id,
+                Title = dbFavorite.Movie.Title,
+                PosterUrl = dbFavorite.Movie.PosterUrl,
+                Budget = (decimal)dbFavorite.Movie.Budget
+
+            };
+
+            return movieCardResponseModel;
+
+        }
+
+        public async Task<string> DeleteReviews(int id, int movieId)
+        {
+            var dbreview = await _reviewRepository.GetExistsAsync(r => r.UserId == id && r.MovieId == movieId);
+
+            if (dbreview != true)
+            {
+                throw new ConflictException("Conflict");
+            }
+
+            //var review = await _reviewRepository.GetReviews(id, movieId);
+
+          
+            await _reviewRepository.DeleteAsync(new Review
+            {
+                MovieId = movieId,
+                UserId = id
+             
+
+            });
+            
+
+          
+
+            return "The reviews is Deleted";
+
         }
     }
 }

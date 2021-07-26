@@ -10,10 +10,8 @@ namespace ApplicationCore.Models
     {
         public int PurchaseId { get; set; }
         public int UserId { get; set; }
-        public decimal TotalPrice { get; set; }
-        public DateTime PurchaseDateTime { get; set; }
         public int MovieId { get; set; }
-        public string MovieName { get; set; }
        
+
     }
 }

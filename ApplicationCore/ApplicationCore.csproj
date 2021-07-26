@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="RepositoryInterfaces\IReviewRepository.cs" />
-    <Compile Remove="ServiceInterfaces\IReviewService.cs" />
+    <Compile Remove="ServiceInterfaces\IPurchaseService.cs" />
   </ItemGroup>
 
   <ItemGroup>

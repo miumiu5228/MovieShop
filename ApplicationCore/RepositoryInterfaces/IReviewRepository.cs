@@ -10,5 +10,6 @@ namespace ApplicationCore.RepositoryInterfaces
     public interface IReviewRepository : IAsyncRepository<Review>
     {
         Task<List<Review>> GetReviewsByUser(int id);
+        Task<Review> GetReviews(int id, int movieId);
     }
 }

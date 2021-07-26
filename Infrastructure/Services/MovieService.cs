@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ApplicationCore.Entities;
+using ApplicationCore.Exceptions;
 using ApplicationCore.Models;
 using ApplicationCore.RepositoryInterfaces;
 using ApplicationCore.ServiceInterfaces;
@@ -141,24 +143,23 @@ namespace Infrastructure.Services
             
         }
 
-        public async Task<List<MovieReviewsModel>> GetTopRatingMovies()
+        public async Task<List<MovieCardResponseModel>> GetTopRatingMovies()
         {
-            var movies = await _movieRepository.GetMoviesByTopRating();
+            var dbMovies = await _movieRepository.GetTopRatedMovies();
 
-            foreach (var m in movies)
+            var movies = new List<MovieCardResponseModel>();
+            foreach (var movie in dbMovies)
             {
-                var movie = await _movieRepository.GetByIdAsync(m.Id);
-                m.Rating = movie.Rating;
+                movies.Add(new MovieCardResponseModel
+                {
+                    Id = movie.Id,
+                    Budget = movie.Budget.GetValueOrDefault(),
+                    PosterUrl = movie.PosterUrl,
+                    Title = movie.Title,
+                    Rating = movie.Rating,
+                });
             }
-
-            var movieReview = new List<MovieReviewsModel>();
-
-            foreach (var movie in movies)
-            {
-                movieReview.Add(new MovieReviewsModel { MovieId = movie.Id, Rating = (decimal)movie.Rating, MovieName = movie.Title });
-            }
-
-            return movieReview;
+            return movies;
         }
 
         public async Task<List<MovieReviewsModel>> GetMovieReviews(int id)
@@ -172,6 +173,60 @@ namespace Infrastructure.Services
             }
 
             return movieReviews;
+        }
+
+        public async Task<MovieCardResponseModel> CreateMovie(MovieCreateResquestModel movie)
+        {
+            var newMovie = await _movieRepository.AddAsync(new Movie
+            {
+                Title = movie.Title,
+                PosterUrl = movie.PosterUrl,
+                BackdropUrl = movie.BackdropUrl,
+                Overview = movie.Overview,
+                Tagline = movie.Tagline,
+                Budget = movie.Budget,
+                Revenue = movie.Revenue,
+                ImdbUrl = movie.ImdbUrl,
+                TmdbUrl = movie.TmdbUrl,
+                ReleaseDate = movie.ReleaseDate,
+                RunTime = movie.RunTime,
+                Price = movie.Price,
+            });
+
+            return new MovieCardResponseModel
+            {
+                Id = newMovie.Id,
+                Budget = newMovie.Budget.GetValueOrDefault(),
+                PosterUrl = newMovie.PosterUrl,
+                Title = newMovie.Title,
+               
+            };
+        }
+
+        public async Task<MovieDetailsResponseModel> UpdateMovie(MovieUpdateRequestModel movie)
+        {
+            var dbMovie = await _movieRepository.GetByIdAsync(movie.Id);
+            if (dbMovie == null)
+            {
+                throw new ConflictException("No movie exists");
+            }
+
+            dbMovie.Title = movie.Title;
+            dbMovie.PosterUrl = movie.PosterUrl;
+            dbMovie.BackdropUrl = movie.BackdropUrl;
+            dbMovie.Overview = movie.Overview;
+            dbMovie.Tagline = movie.Tagline;
+            dbMovie.Budget = movie.Budget;
+            dbMovie.Revenue = movie.Revenue;
+            dbMovie.ImdbUrl = movie.ImdbUrl;
+            dbMovie.TmdbUrl = movie.TmdbUrl;
+            dbMovie.ReleaseDate = movie.ReleaseDate;
+            dbMovie.RunTime = movie.RunTime;
+            dbMovie.Price = movie.Price;
+
+            var updatedDbMovie = await _movieRepository.UpdateAsync(dbMovie);
+
+            return await GetMovieDetails(updatedDbMovie.Id);
         }
     }
 

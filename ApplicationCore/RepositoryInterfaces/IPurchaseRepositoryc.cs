@@ -9,6 +9,6 @@ namespace ApplicationCore.RepositoryInterfaces
 {
     public interface IPurchaseRepository : IAsyncRepository<Purchase>
     {
-        Task<List<Purchase>> GetPurchase(int id);
+        //Task<List<Purchase>> GetPurchase(int id);
     }
 }

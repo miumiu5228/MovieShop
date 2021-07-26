@@ -24,10 +24,11 @@ namespace Infrastructure.Repositories
             return user;
         }
 
-        public Task<User> GetPurchase(int id)
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task<User> PurchaseMovie(int movieId,int userId)
+        //{
+        //    var user = await _dbContext.Users.Include(u => u.Purchases).FirstOrDefaultAsync(u => u.Id == userId);
+        //    return user;
+        //}
 
         public async Task<User> GetReviewsById(int id)
         {
@@ -41,8 +42,11 @@ namespace Infrastructure.Repositories
             return user;
         }
 
-       
-       
+        public async Task<User> GetPurchase(int userId)
+        {
+            var user = await _dbContext.Users.Include(u => u.Purchases).FirstOrDefaultAsync(u => u.Id == userId);
+            return user;
+        }
     }
 
 }

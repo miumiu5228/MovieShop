@@ -10,6 +10,7 @@ namespace ApplicationCore.ServiceInterfaces
 {
     public interface IReviewService
     {
-        Task<List<MovieReviewsModel>> GetReviewsByUserId(int id);
+        //Task<List<MovieReviewsModel>> GetReviewsByUserId(int id);
+        Task<PostReviewsResponseModel> PostReviews(PostReviewsRequestModel model);
     }
 }

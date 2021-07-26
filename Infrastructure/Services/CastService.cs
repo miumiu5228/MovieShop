@@ -55,6 +55,8 @@ namespace Infrastructure.Services
 
         public async Task<CastResponseModel> GetCastById(int id)
         {
+            var x = 0;
+            x += 1;
             var cast = await _castRepository.GetByIdAsync(id);
 
             var castDetails = new CastResponseModel()

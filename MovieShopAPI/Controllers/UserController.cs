@@ -15,42 +15,45 @@ namespace MovieShopAPI.Controllers
     {
        
         private readonly IUserService _userService;
+        private readonly IReviewService _reviewService;
+      
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IReviewService reviewService)
         {
             _userService = userService;
+            _reviewService = reviewService;
         }
 
-        //[HttpPost]
-        //[Route("{purchases")]
-        //public async Task<IActionResult> PurchasesMovie(PurchaseMovieModel purchaseMovie)
-        //{
-        //    var movie = await _userService.Purchase(purchaseMovie);
+        [HttpPost]
+        [Route("purchase")]
+        public async Task<IActionResult> PurchasesMovie([FromBody] PurchaseMovieModel purchaseMovie)
+        {
+
+            var movie = await _userService.PurchaseMovie(purchaseMovie);
 
 
-        //    if (movie == null)
-        //    {
-        //        return NotFound("Purchase movie filed");
-        //    }
+            if (movie == null)
+            {
+                return NotFound("Purchase movie filed");
+            }
 
-        //    return Ok(movie);
+            return Ok(movie);
 
 
-        //}
-
-       
+        }
 
 
         [HttpGet]
         [Route("{id:int}/purchases")]
         public async Task<IActionResult> GetUserPurchases(int id)
         {
+            var x = 0;
             var userPurchases = await _userService.GetPurchaseById(id);
 
 
             if (!userPurchases.Any())
             {
-                return NotFound("No user Found");
+                return NotFound("No movie Found");
             }
 
             return Ok(userPurchases);
@@ -60,21 +63,22 @@ namespace MovieShopAPI.Controllers
 
 
         [HttpPost]
-        [Route("{id:int}/favorites")]
-        public async Task<IActionResult> UserFavorite(UserFavoriteMoviesModel requestModel)
+        [Route("favorite")]
+        public async Task<IActionResult> Favorite([FromBody] FavoriteRequestModel model)
         {
-            var userFavorites = await _userService.UserFavorite(requestModel);
-
-
-            if (userFavorites == null)
-            {
-                return NotFound("Adding Filed");
-            }
-
-            return Ok(userFavorites);
-
-
+            var favoriteMovieResponse = await _userService.AddToFavorite(model);
+            return Ok(favoriteMovieResponse);
         }
+
+        [HttpPost]
+        [Route("unfavorite")]
+        public async Task<IActionResult> UnFavorite([FromBody] UnFavoriteRequestModel model)
+        {
+            var unfavoriteMovieResponse = await _userService.removefromFavorite(model);
+            return Ok(unfavoriteMovieResponse);
+        }
+
+
 
 
         [HttpGet]
@@ -94,7 +98,25 @@ namespace MovieShopAPI.Controllers
 
         }
 
-   
+        [HttpGet]
+        [Route("{id:int}/movie/{movieId:int}/favorite")]
+        public async Task<IActionResult> GetFavoriteMovie(int id, int movieId)
+        {
+            var x = 0;
+            var userPurchases = await _userService.GetFavoriteMovieDetail(id, movieId);
+
+
+            if (userPurchases == null)
+            {
+                return NotFound("No movie Found");
+            }
+
+            return Ok(userPurchases);
+
+
+        }
+
+
 
         [HttpGet]
         [Route("{id:int}/reviews")]
@@ -112,5 +134,34 @@ namespace MovieShopAPI.Controllers
 
 
         }
+
+
+        [HttpPost]
+        [Route("review")]
+        public async Task<IActionResult> PostReview([FromBody] PostReviewsRequestModel model)
+        {
+           
+            var createdReviews = await _userService.PostReviews(model);
+             return Ok(createdReviews);
+        }
+
+        [HttpPut]
+        [Route("review")]
+        public async Task<IActionResult> PutReviews([FromBody] PostReviewsRequestModel model)
+        {
+
+            var createdReviews = await _userService.PutReviews(model);
+            return Ok(createdReviews);
+        }
+
+        [HttpPut]
+        [Route("{id:int}/movie/{movieId:int}")]
+        public async Task<IActionResult> DeleteReviews(int id, int movieId)
+        {
+           
+            var status = await _userService.DeleteReviews(id, movieId);
+            return Ok(status);
+        }
+
     }
 }

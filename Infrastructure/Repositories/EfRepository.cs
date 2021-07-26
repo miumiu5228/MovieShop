@@ -15,6 +15,7 @@ namespace Infrastructure.Repositories
 
         public EfRepository(MovieShopDbContext dbContext)
         {
+         
             _dbContext = dbContext;
         }
 
@@ -61,14 +62,18 @@ namespace Infrastructure.Repositories
             return entity;
         }
 
-        //public async Task<T> UpdateAsync(T entity)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<T> UpdateAsync(T entity)
+        {
+            _dbContext.Update<T>(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
 
-        //public async Task DeleteAsync(T entity)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<T> DeleteAsync(T entity)
+        {
+           _dbContext.Set<T>().Remove(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
     }
 }

@@ -1,7 +1,5 @@
 # MovieShop project
-This is a movie shop website built by ASP.NET core application. The website is a online movie shop, created for user to purchase movie on the website.
-In this project, MS SQL server was connected to create the SQL database using Entity Framework Core. The clients could add, delete and update the data in the database from the clientside. 
-The business logic was implemented to extract the correct data and presented in the client side. Also this website contains the webpages, decorated by the BOOTSTRAP, such as login page and register page. 
+This is a movie shop application. It's a online movie shop, created for user to purchase movie on the website. I develop it with ASP .Net Core, and I connect it with the server by using Entity Framework Core, and also create and update database with EF Core Code First approach using migrations.The clients could add, delete and update the data in the database from the clientside. The business logic was implemented to extract the correct data and presented in the client side. Also this website contains the webpages, decorated by the BOOTSTRAP, such as login page and register page. 
 <li>I also add the hashing and salt to the user password when the user registers the account and create a cookie authentication to 
 check if the user login time expired to enhance the security level. </li>
 <li>There is a homepage that displays the top revenue movies and all the movie posters are clickable. The page will direct to the certain movie details when clicking the movie poster. </li>

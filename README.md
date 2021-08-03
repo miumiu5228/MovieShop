@@ -7,3 +7,19 @@ check if the user login time expired to enhance the security level. </li>
 <li>There is a homepage that displays the top revenue movies and all the movie posters are clickable. The page will direct to the certain movie details when clicking the movie poster. </li>
 <li>In the movie details page, we could click the cast name and the page will direct to the cast details.</li>
 <li>In addition, API was built, so we could use other frontend frameworks (Vue, React, Angular) to fetch the Json data and render the HTML page.</li>
+
+## Homepage 
+![screenshot](Homepage.png)
+
+## Movie detail page 
+![screenshot](movieDetails.png)
+
+## Cast detail page 
+![screenshot](castDetails.png)
+
+## Login/Register
+![screenshot](login.png)
+![screenshot](register.png)
+
+## API diagram 
+![screenshot](image.png)
